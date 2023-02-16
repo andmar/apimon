@@ -41,6 +41,8 @@ The configuration is a YAML file structured like this:
 output:              # Output configuration
   traget: stdout     # Output target (default: stdout)
   format: influxdb   # Output format (default: influxdb)
+  http_target_headers: # HTTP Headers send when format triggers an HTTP request. Can be used for example to contact endpoints that need token based authentication.
+      - "X-Test: Some Value"
 proxy: ${HTTP_PROXY} # Global HTTP proxy to use (default: none)
 user_agent: "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" # UserAgent used (default: Mozilla/5.0 (compatible; APImon/1.0; +https://github.com/ncarlier/apimon))
 healthcheck:         # Global healthcheck configuration
@@ -85,7 +87,7 @@ This configuration section allows you to set the targeted output
 - `file://test.log`: Writes metrics to a log file.
 - `http://...`:
   - Post metrics to an HTTP endpoint such as [InfluxDb][influxdb],
-  [Elasticsearch][elasticsearch], etc. (Push Mode)
+  [Elasticsearch][elasticsearch], etc. Arbitrary HTTP headers can be configured to be sent on this requests via http_target_headers. (Push Mode)
   - OR serve metrics on this HTTP endpoint if `prometheus` format is used (Pull mode)
 
 > Note: When you are using `stdout` you should use the logging output flag
