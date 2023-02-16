@@ -10,8 +10,9 @@ import (
 
 // Output configuration
 type Output struct {
-	Target string `yaml:"target"`
-	Format string `yaml:"format"`
+	Target            string   `yaml:"target"`
+	Format            string   `yaml:"format"`
+	HTTPTargetHeaders []string `yaml:"http_target_headers"`
 }
 
 // Rule configuration

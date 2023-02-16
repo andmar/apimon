@@ -17,7 +17,7 @@ type Provider struct {
 
 // NewOutputProvider create new metric provider
 func NewOutputProvider(conf config.Output) (*Provider, error) {
-	writer, err := writer.NewOutputWriter(conf.Target, conf.Format)
+	writer, err := writer.NewOutputWriter(conf)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get output writer: %s", err)
 	}

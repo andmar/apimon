@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/ncarlier/apimon/pkg/config"
 	"github.com/ncarlier/apimon/pkg/model"
 	"github.com/ncarlier/apimon/pkg/output/format"
 )
@@ -16,7 +17,10 @@ type Writer interface {
 }
 
 // NewOutputWriter creates new output writer
-func NewOutputWriter(target, _format string) (Writer, error) {
+func NewOutputWriter(conf config.Output) (Writer, error) {
+
+	var target, _format string = conf.Target, conf.Format
+
 	formatter, err := format.NewMetricFormatter(_format)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get metric formatter: %s", err)
@@ -31,7 +35,7 @@ func NewOutputWriter(target, _format string) (Writer, error) {
 	case target == "", target == "stdout":
 		writer = newStdoutWriter(formatter)
 	case isValidURLWithScheme(target, "http") || isValidURLWithScheme(target, "https"):
-		writer = newHTTPWriter(target, formatter)
+		writer = newHTTPWriter(target, formatter, conf.HTTPTargetHeaders)
 	case isValidURLWithScheme(target, "file"):
 		writer, err = newFileWriter(target, formatter)
 		if err != nil {
